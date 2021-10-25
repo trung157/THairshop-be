@@ -2,62 +2,36 @@ package com.thairshop.demo.dto;
 
 import java.util.Date;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountDTO {
-
-	private int AccountId;
-	private String FullName;
-	private Date DateOfBirth;
-	private String	Gender;
-	private String	Email;
-	private String	PhoneNumber;
-
-	public AccountDTO() {
-		super();
-	}
-	public AccountDTO(int accountId, String fullName, Date dateOfBirth, String gender, String email, String phoneNumber) {
-		super();
-		AccountId = accountId;
-		FullName = fullName;
-		DateOfBirth = dateOfBirth;
-		Gender = gender;
-		Email = email;
-		PhoneNumber = phoneNumber;
-	}
-	public int getAccountId() {
-		return AccountId;
-	}
-	public void setAccountId(int accountId) {
-		AccountId = accountId;
-	}
-	public String getFullName() {
-		return FullName;
-	}
-	public void setFullName(String fullName) {
-		FullName = fullName;
-	}
-	public Date getDateOfBirth() {
-		return DateOfBirth;
-	}
-	public void setDateOfBirth(Date dateOfBirth) {
-		DateOfBirth = dateOfBirth;
-	}
-	public String getGender() {
-		return Gender;
-	}
-	public void setGender(String gender) {
-		Gender = gender;
-	}
-	public String getEmail() {
-		return Email;
-	}
-	public void setEmail(String email) {
-		Email = email;
-	}
-	public String getPhoneNumber() {
-		return PhoneNumber;
-	}
-	public void setPhoneNumber(String phoneNumber) {
-		PhoneNumber = phoneNumber;
-	}
+	@NotNull
+	private int accountId;
+	@NotBlank(message = "FullName is not null!")
+	private String fullName;
+	@NotNull(message = "DateOfBirth is not null!")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date dateOfBirth;
+	@NotBlank(message = "Gender is not null!")
+	private String gender;
+	@NotBlank(message = "Email is not null!")
+	private String	email;
+	@NotBlank(message = "PhoneNumber is not null!")
+	private String	phoneNumber;
 	
 }

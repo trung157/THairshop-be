@@ -1,7 +1,9 @@
 package com.thairshop.demo.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,10 +15,12 @@ import javax.persistence.Table;
 import com.thairshop.demo.common.ERole;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 @SuppressWarnings("serial")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,6 +31,7 @@ public class Role implements Serializable{
     private int roleId;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(length= 20)
     private ERole roleName;
 	
 }

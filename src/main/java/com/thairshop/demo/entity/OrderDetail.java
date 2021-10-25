@@ -17,16 +17,18 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="Order_Product")
-public class OrderProduct implements Serializable {
+@Table(name="Order_Detail")
+public class OrderDetail implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-	private int orderProductId;
+	private int orderDetailId;
 
-	private int amount;
+	private int quantity;
 
 	private int price;
+	
+	private String image;
 	
 	@ManyToOne
 	@JoinColumn(name = "productId")

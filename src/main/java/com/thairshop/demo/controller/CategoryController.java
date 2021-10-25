@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thairshop.demo.dto.CategoryDTO;
 import com.thairshop.demo.entity.Category;
+import com.thairshop.demo.entity.Product;
 import com.thairshop.demo.service.CategoryService;
+import com.thairshop.demo.service.ProductService;
 
 
 @CrossOrigin("*")
@@ -33,11 +36,14 @@ public class CategoryController {
 
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	ProductService productService;
 
 //	get category và phân trang
 	@GetMapping("/categorys-page")
-	public ResponseEntity<List<Category>> getAll(@RequestParam int page, @RequestParam int size) {
-		return ResponseEntity.ok(categoryService.getCategorysPage(page, size));
+	public ResponseEntity<Page<Category>> getAll(@RequestParam int page, @RequestParam int size) {
+		return ResponseEntity.ok(categoryService.getCategoryPage(page, size));
 	}
 
 	// list tất cả category hiện có
@@ -45,12 +51,18 @@ public class CategoryController {
 	public ResponseEntity<List<Category>> getAll() {
 		return ResponseEntity.ok(categoryService.getAllCategory(0));
 	}
+	
+	@GetMapping("/list-category-search")
+	public ResponseEntity<Page<Category>> getCategorySearchAndPage(@RequestParam String categoryName,
+			@RequestParam int page, @RequestParam int size) {
+		return ResponseEntity.ok(categoryService.findCategoryByCategoryNameAndPageDesc(categoryName, page, size));
+	}
 
 	@GetMapping("/category/{categoryId}")
 	public Map<String, Object> getCategoryById(@PathVariable("categoryId") Integer categoryId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			Category category = categoryService.findByCategoryId(categoryId, 0);
+			Category category = categoryService.findByCategoryId(categoryId);
 			if(category == null) {
 				 map.put("status", false);
 	             return map;
@@ -106,13 +118,13 @@ public class CategoryController {
 				}
 			}
 			else {
-				Category cate = categoryService.findById(categoryId).get();
+				Category cate = categoryService.findByCategoryId(categoryId);
 				if(cate == null) {
 					map.put("status", false);
 					return map;
 				}
 				else {
-					categoryService.saveCategory(category);
+					categoryService.updateCategory(category);
 					map.put("status", true);
 					return map;
 				}
@@ -128,14 +140,22 @@ public class CategoryController {
 	public Map<String, Object> delete(@PathVariable("categoryId") int categoryId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			Category cate = categoryService.findByCategoryId(categoryId, 0);
-			if (cate == null) {
+			Category c = categoryService.findByCategoryId(categoryId);
+			List<Product> list = productService.findByCategoryId(categoryId);
+			if(c == null) {
 				map.put("status", false);
 				return map;
-			} else {
-				categoryService.deleteCategory(0, categoryId);
-				map.put("status", true);
-				return map;
+			}
+			else {
+				if(list.size() > 0) {
+					map.put("status", 501);
+					return map;
+				}
+				else {
+					categoryService.deleteCategory(categoryId);
+					map.put("status", true);
+					return map;
+				}
 			}
 		} catch (Exception e) {
 			map.put("status", 500);

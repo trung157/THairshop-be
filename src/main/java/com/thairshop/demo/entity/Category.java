@@ -38,9 +38,6 @@ public class Category implements Serializable {
 	@NotNull
 	@ColumnDefault("0")
 	private int status;
-	
-	public Category(String categoryName) {
-		this.categoryName = categoryName;
-	}
+
 	
 }

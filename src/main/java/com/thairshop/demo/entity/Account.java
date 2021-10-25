@@ -17,8 +17,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.*;
 
@@ -37,7 +41,9 @@ public class Account implements Serializable {
 	@Column(name = "full_name")
 	private String fullName;
 
-	@NotBlank(message = "DateOfBirth is not null!")
+	@NotNull(message = "DateOfBirth is not null!")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "date_of_birth")
 	private Date dateOfBirth;
 

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -14,14 +15,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class SignupDTO {
 	@NotBlank
-    @Size(max = 255)
+    @Size(min = 3,max = 50)
     private String fullName;
 	
-    @NotBlank
+    @NotNull
     private Date dateOfBirth;
  
     @NotBlank
@@ -35,12 +35,12 @@ public class SignupDTO {
     
     @NotBlank
     @Size(max = 20)
-    private String numberPhone ;
+    private String phoneNumber ;
     
     private Set<String> role;
     
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(min = 6, max = 24)
     private String password;
   
 }

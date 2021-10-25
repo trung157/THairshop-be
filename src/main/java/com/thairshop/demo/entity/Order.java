@@ -23,6 +23,10 @@ public class Order implements Serializable {
 	private int orderId;
 
 	private Date createdDate;
+	
+	int totalQuantity;
+
+	int totalPrice;
 
 	private int	status;
 	
@@ -32,15 +36,15 @@ public class Order implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
-	Set<OrderProduct> orderProducts;
+	Set<OrderDetail> orderDetails;
 	
-	public void add(OrderProduct orderProduct) {
-		if (orderProduct != null) {
-			if (orderProducts == null) {
-				orderProducts = new HashSet<>();
+	public void add(OrderDetail orderDetail) {
+		if (orderDetail != null) {
+			if (orderDetails == null) {
+				orderDetails = new HashSet<>();
 			}
-			orderProduct.setOrder(this);
-			orderProducts.add(orderProduct);
+			orderDetail.setOrder(this);
+			orderDetails.add(orderDetail);
 		}
 	}
 	

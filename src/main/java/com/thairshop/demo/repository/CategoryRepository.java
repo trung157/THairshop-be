@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.thairshop.demo.entity.Category;
-import com.thairshop.demo.entity.Product;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
@@ -28,4 +27,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	Category findByCategoryIdAndStatus(int categoryId, int status);
 	
 	<S extends Category> S save(S entity);
+	
+	Page<Category> findByStatusAndCategoryNameContainingOrderByCategoryIdDesc(int status,String categoryName, Pageable pageable);
 }
